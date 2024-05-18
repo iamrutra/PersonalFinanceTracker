@@ -30,27 +30,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/auth/registr","/error").permitAll()
+                .antMatchers("/auth/login", "/auth/register").permitAll()
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error=true")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login");
+                .defaultSuccessUrl("/budget", true);
     }
 
-    //setting config
+    // Un-commented and adjusted the configuration for password encoder
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(getPasswordEncoder());
+                .passwordEncoder(passwordEncoder()); // Using the configured password encoder
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // Using BCryptPasswordEncoder for password encoding
     }
 }

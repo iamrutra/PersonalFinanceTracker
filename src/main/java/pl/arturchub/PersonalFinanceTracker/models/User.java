@@ -1,9 +1,14 @@
 package pl.arturchub.PersonalFinanceTracker.models;
 
+
 import jdk.jfr.Timestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity

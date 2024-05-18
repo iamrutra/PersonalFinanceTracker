@@ -21,12 +21,12 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return this.user.getUsername();
     }
 
     @Override
