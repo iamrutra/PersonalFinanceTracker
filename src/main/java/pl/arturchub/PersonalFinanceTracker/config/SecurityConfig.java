@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/auth/login", "/auth/register", "/process_login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login, register, and static resources
-                .anyRequest().authenticated() // Require authentication for all other requests
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")

@@ -1,6 +1,9 @@
 package pl.arturchub.PersonalFinanceTracker.models;
 
+import jdk.jfr.Timestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "budgets")
@@ -20,6 +23,10 @@ public class Budget {
 
     @Column(name = "amount")
     private double amount;
+
+    @Timestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public Budget() {}
     public Budget(User user, Category category, double amount) {
@@ -58,6 +65,14 @@ public class Budget {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

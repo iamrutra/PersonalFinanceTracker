@@ -13,6 +13,7 @@ import pl.arturchub.PersonalFinanceTracker.util.BudgetValidator;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,8 @@ public class BudgetController {
     @GetMapping
     public String budget(Principal principal, Model model) {
         String username = principal.getName();
-        List<Budget> budgets = userService.findByUsername(username).get().getBudgets();
+        User user = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        List<Budget> budgets = budgetService.findTop10BudgetsByUser(user);
         model.addAttribute("username", username);
         model.addAttribute("amount", budgets);
         return "budgets/budget";
@@ -125,6 +127,7 @@ public class BudgetController {
                 budget.setAmount(-budget.getAmount());
             }
             budget.setUser(user.get());
+            budget.setCreatedAt(LocalDateTime.now());
             budgetService.save(budget);
             return "redirect:/budget";
         } else {
@@ -151,6 +154,7 @@ public class BudgetController {
         }
 
         budget.setUser(user);
+        budget.setCreatedAt(LocalDateTime.now());
         budgetService.save(budget);
         return "redirect:/budget";
     }

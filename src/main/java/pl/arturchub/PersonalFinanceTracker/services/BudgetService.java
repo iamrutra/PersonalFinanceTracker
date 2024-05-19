@@ -3,6 +3,7 @@ package pl.arturchub.PersonalFinanceTracker.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.arturchub.PersonalFinanceTracker.models.Budget;
+import pl.arturchub.PersonalFinanceTracker.models.User;
 import pl.arturchub.PersonalFinanceTracker.repositories.BudgetRepository;
 
 import java.util.List;
@@ -15,6 +16,10 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
     public BudgetService(BudgetRepository budgetRepository) {
         this.budgetRepository = budgetRepository;
+    }
+
+    public List<Budget> findTop10BudgetsByUser(User user) {
+        return budgetRepository.findTop10ByUserOrderByCreatedAtDesc(user);
     }
 
     public List<Budget> findAll() {
