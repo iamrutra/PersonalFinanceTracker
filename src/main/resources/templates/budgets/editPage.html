@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Page</title>
+</head>
+<body>
+<div th:if="${budget.get().getAmount() > 0}">
+    <h1>Is it still income?</h1>
+    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.get().getId()})}" th:method="post">
+        <input type="hidden" name="type" value="income">
+        <input type="submit" value="YES">
+    </form>
+    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.get().getId()})}" th:method="post">
+        <input type="hidden" name="type" value="expense">
+        <input type="submit" value="NO">
+    </form>
+</div>
+<div th:unless="${budget.get().getAmount() > 0}">
+    <h1>Is it still expense?</h1>
+    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.get().getId()})}" th:method="post">
+        <input type="hidden" name="type" value="expense">
+        <input type="submit" value="YES">
+    </form>
+    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.get().getId()})}" th:method="post">
+        <input type="hidden" name="type" value="income">
+        <input type="submit" value="NO">
+    </form>
+</div>
+</body>
+</html>

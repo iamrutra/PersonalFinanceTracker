@@ -1,6 +1,7 @@
 package pl.arturchub.PersonalFinanceTracker.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -14,8 +15,8 @@ public class Category {
     @Column(name = "category_name")
     private String category_name;
 
-    @OneToOne(mappedBy = "category")
-    private Budget budget;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Budget> budgets;
 
     public Category() {}
     public Category(String category_name) {
@@ -38,12 +39,11 @@ public class Category {
         this.category_name = category_name;
     }
 
-    public Budget getBudget() {
-        return budget;
+    public List<Budget> getBudgets() {
+        return budgets;
     }
-
-    public void setBudget(Budget budget) {
-        this.budget = budget;
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
     }
 
     @Override

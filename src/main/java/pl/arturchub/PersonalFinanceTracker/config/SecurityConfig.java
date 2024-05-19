@@ -28,13 +28,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/auth/register").permitAll()
+                .antMatchers("/auth/login", "/auth/register", "/process_login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login, register, and static resources
+                .anyRequest().authenticated() // Require authentication for all other requests
                 .and()
-                .formLogin().loginPage("/auth/login")
+                .formLogin()
+                .loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/budget", true);
+                .defaultSuccessUrl("/budget", true)
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/auth/login")
+                .permitAll();
     }
 
     // Un-commented and adjusted the configuration for password encoder

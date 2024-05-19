@@ -37,12 +37,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, BindingResult bindingResult){
-
         userValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()){
             return "auth/register";
         }
-        user.setCreated_at(LocalDateTime.now());
         userService.save(user);
         return "auth/login";
     }

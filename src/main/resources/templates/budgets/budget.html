@@ -5,6 +5,46 @@
     <title>Your budget</title>
 </head>
 <body>
-Hello world!
+<h1>Welcome, <span th:text="${username}">Username</span>!</h1>
+
+<form th:action="@{/logout}" th:method="post">
+    <input type="submit" value="Log Out!">
+</form>
+
+<div class="inputs">
+    <form action="/budget/income" method="get">
+        <input type="submit" value="Add Income">
+    </form>
+
+    <form action="/budget/expenses" method="get">
+        <input type="submit" value="Add Expenses">
+    </form>
+</div>
+
+
+<div id="incomes">
+    <h3>Incomes</h3>
+    <div th:each="income : ${amount}">
+        <div th:if="${income.getAmount() > 0}" style="display: flex">
+            <p th:text="${income.getCategory().getCategory_name()} + ', +'+ ${income.getAmount()}"></p>
+            <form th:action="@{/budget/{id}/editPage(id=${income.getId()})}" method="get">
+                <input type="submit" value="EDIT">
+            </form>
+        </div>
+    </div>
+</div>
+<div id="expenses">
+    <h3>Expenses</h3>
+    <div th:each="expense : ${amount}">
+        <div th:if="${expense.getAmount() < 0}" style="display: flex">
+            <p th:text="${expense.getCategory().getCategory_name()} + ', '+ ${expense.getAmount()}"></p>
+            <form th:action="@{/budget/{id}/editPage(id=${expense.getId()})}" method="get">
+                <input type="submit" value="EDIT">
+            </form>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>

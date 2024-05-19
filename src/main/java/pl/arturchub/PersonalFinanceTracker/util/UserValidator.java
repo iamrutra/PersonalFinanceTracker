@@ -27,8 +27,6 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        Optional<User> optionalUser = userService.findById(user.getId());
-
         if (user.getUsername().isEmpty()) {
             errors.rejectValue("username", "", "Username should not be empty");
         }
@@ -48,5 +46,11 @@ public class UserValidator implements Validator {
         }
 
 
+        if (userService.findByEmail(user.getEmail()).isPresent()) {
+            errors.rejectValue("email", "", "Email address already in use");
+        }
+        if(userService.findByUsername(user.getUsername()).isPresent()) {
+            errors.rejectValue("username", "", "Username already in use");
+        }
     }
 }
