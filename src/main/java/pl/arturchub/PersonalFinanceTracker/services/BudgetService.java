@@ -26,6 +26,11 @@ public class BudgetService {
     }
 
     @Transactional
+    public void deleteById(int id) {
+        budgetRepository.deleteById(id);
+    }
+
+    @Transactional
     public void save(Budget budget) {
         budgetRepository.save(budget);
     }

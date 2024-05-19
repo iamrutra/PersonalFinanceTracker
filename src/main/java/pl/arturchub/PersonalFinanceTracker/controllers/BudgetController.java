@@ -43,28 +43,30 @@ public class BudgetController {
 
     @GetMapping("/{id}/editPage")
     public String editPage(@PathVariable int id, Model model) {
-        model.addAttribute("budget", budgetService.findById(id));
-        return "budgets/editPage";
+        Budget budget = budgetService.findById(id).orElseThrow(() -> new IllegalArgumentException("Budget not found"));
+        model.addAttribute("budget", budget);
+        return "budgets/edit/editPage";
     }
 
     @PostMapping("/{id}/editBudgetType")
     public String editBudgetType(@PathVariable int id, @RequestParam String type, Model model) {
-        Optional<Budget> budget = budgetService.findById(id);
+        Budget budget = budgetService.findById(id).orElseThrow(() -> new IllegalArgumentException("Budget not found"));
+        model.addAttribute("categories", categoryService.findAll());
         if (type.equals("income")) {
-            if (budget.get().getAmount() < 0) {
-                budget.get().setAmount(-budget.get().getAmount());  // Convert expense to income
+            if (budget.getAmount() < 0) {
+                budget.setAmount(-budget.getAmount());
             }
             model.addAttribute("budget", budget);
-            return "budgets/editBudgetIncome";
+            return "budgets/edit/editBudgetIncome";
         } else {
-            if (budget.get().getAmount() < 0) {
-                budget.get().setAmount(-budget.get().getAmount());  // Convert income to expense
+            if (budget.getAmount() > 0) {
+                budget.setAmount(-budget.getAmount());
             }
+            budget.setAmount(Math.abs(budget.getAmount()));
             model.addAttribute("budget", budget);
-            return "budgets/editBudgetExpense";
+            return "budgets/edit/editBudgetExpense";
         }
     }
-
 
     @GetMapping("/income")
     public String budgetIncome(@ModelAttribute("budget") Budget budget, Model model) {
@@ -88,6 +90,26 @@ public class BudgetController {
         return handleBudget(budget, bindingResult, principal, model, true);
     }
 
+    @PostMapping("/{id}/edit")
+    public String editBudget(@ModelAttribute Budget budget, @RequestParam String type, BindingResult bindingResult, Principal principal, Model model) {
+        return handleEditBudget(budget, type, bindingResult, principal, model);
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteBudget(@PathVariable int id, Principal principal) {
+        Budget budget = budgetService.findById(id).orElseThrow(() -> new IllegalArgumentException("Budget not found"));
+
+        String username = principal.getName();
+        User user = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (user.getBudgets().contains(budget)) {
+            user.getBudgets().remove(budget);
+            budgetService.deleteById(budget.getId());
+        }
+
+        return "redirect:/budget";
+    }
+
     private String handleBudget(Budget budget, BindingResult bindingResult, Principal principal, Model model, boolean isExpense) {
         budgetValidator.validate(budget, bindingResult);
 
@@ -109,5 +131,27 @@ public class BudgetController {
             model.addAttribute("error", "User not found");
             return isExpense ? "budgets/budgetExpenses" : "budgets/budgetIncome";
         }
+    }
+
+    private String handleEditBudget(Budget budget, String type, BindingResult bindingResult, Principal principal, Model model) {
+        budgetValidator.validate(budget, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAll());
+            return budget.getAmount() < 0 ? "budgets/edit/editBudgetExpense" : "budgets/edit/editBudgetIncome";
+        }
+
+        String username = principal.getName();
+        User user = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (type.equals("expense") && budget.getAmount() > 0) {
+            budget.setAmount(-budget.getAmount());
+        } else if (type.equals("income") && budget.getAmount() < 0) {
+            budget.setAmount(-budget.getAmount());
+        }
+
+        budget.setUser(user);
+        budgetService.save(budget);
+        return "redirect:/budget";
     }
 }

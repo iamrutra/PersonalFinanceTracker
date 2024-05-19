@@ -30,6 +30,9 @@
             <form th:action="@{/budget/{id}/editPage(id=${income.getId()})}" method="get">
                 <input type="submit" value="EDIT">
             </form>
+            <form th:action="@{/budget/{id}/delete(id=${income.getId()})}" method="post">
+                <input type="submit" value="DELETE">
+            </form>
         </div>
     </div>
 </div>
@@ -41,10 +44,12 @@
             <form th:action="@{/budget/{id}/editPage(id=${expense.getId()})}" method="get">
                 <input type="submit" value="EDIT">
             </form>
+            <form th:action="@{/budget/{id}/delete(id=${expense.getId()})}" method="post">
+                <input type="submit" value="DELETE">
+            </form>
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
