@@ -3,23 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #222;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden; /* Prevent scrolling */
+    }
+    .container {
+        color: white;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .form {
+        position: relative;
+        background-color: rgba(45, 45, 45, 1);
+        border-radius: 20px;
+        padding: 40px;
+        width: 400px;
+        height: 300px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    </style>
 </head>
 <body>
-<form name="f" action="/process_login" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
-    <label for="username">Введите имя пользователя: </label>
-    <input type="text" name="username" id="username">
-    <br>
-    <label for="password">Введите пароль: </label>
-    <input type="password" name="password" id="password">
-    <br>
-    <input type="submit" value="Login">
-    <div th:if="${param.error}" style="color: red">
-        Bad username or password!
+<div class="highlight"></div>
+<div class="container">
+    <div class="form">
+        <form name="f" action="/process_login" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    
+            <label for="username">Enter your username: </label>
+            <input type="text" name="username" id="username">
+            <br>
+            <label for="password">Enter your password: </label>
+            <input type="password" name="password" id="password">
+            <br>
+            <input type="submit" value="Login">
+            <a href="/auth/register">Sign up</a>
+            <div th:if="${param.error}" style="color: red">
+                Bad username or password!
+            </div>
+        </form>
     </div>
-    <br>
-    <a href="/auth/register">Sign up</a>
-</form>
+</div>
+<script>
+    const form = document.querySelector('.form');
+
+    form.addEventListener('mousemove', () => {
+      form.style.transition = 'border 0.3s';
+      form.style.border = "solid 1px red";
+    });
+
+    form.addEventListener('mouseout', () => {
+      form.style.transition = 'border 0.3s';
+      form.style.border = "none";
+    });
+</script>
 </body>
 </html>

@@ -1,22 +1,16 @@
 package pl.arturchub.PersonalFinanceTracker.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.arturchub.PersonalFinanceTracker.services.UserDetailsService;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-/**
- * @author Neil Alishev
- */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,22 +25,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/auth/register", "/process_login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login, register, and static resources
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/budget", true)
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login")
-                .permitAll();
-    }
-
-    // Un-commented and adjusted the configuration for password encoder
+            .antMatchers("/auth/login", "/auth/register", "/process_login", "/css/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginPage("/auth/login")
+            .loginProcessingUrl("/process_login")
+            .defaultSuccessUrl("/budget", true)
+            .permitAll()
+            .and()
+            .logout()
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/auth/login")
+            .permitAll();
+}
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
