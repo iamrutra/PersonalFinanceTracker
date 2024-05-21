@@ -37,9 +37,11 @@ public class BudgetController {
     public String budget(Principal principal, Model model) {
         String username = principal.getName();
         User user = userService.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        List<Budget> budgets = budgetService.findTop10BudgetsByUser(user);
+        List<Budget> budgetsGreater = budgetService.findTop5ByUserWhereBudgetGreaterThan0(user); // Income&Expense UPD: where budget > 0 & budget < 0 TODO
+        List<Budget> budgetsLess = budgetService.findTop5ByUserWhereBudgetLessThan0(user); // Income&Expense UPD: where budget > 0 & budget < 0 TODO
         model.addAttribute("username", username);
-        model.addAttribute("amount", budgets);
+        model.addAttribute("amountG", budgetsGreater); // Income&Expense TODO
+        model.addAttribute("amountL", budgetsLess); // Income&Expense TODO
         return "budgets/budget";
     }
 

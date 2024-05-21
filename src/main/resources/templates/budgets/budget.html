@@ -83,17 +83,18 @@
         width: 30%;
     }
     .incm, .expns{
+        margin-top: 20px;
         justify-content: space-between;
         padding: 20px;
         text-align: center;
     }
-    .incm a, .expns a{
+    .incm a, .expns a, .incm span, .expns span{
         font-size: 22px;
         font-family: "Radio Canada Big", sans-serif;
         text-decoration: none;
         text-align: center;
     }
-    .incm a:visited, .expns a:visited{
+    a:visited{
         color: white;
     }
     .incm:hover, .expns:hover{
@@ -108,11 +109,17 @@
         font-size: 18px;
         transition: font-size 0.3s;
     }
+    .incm span{
+        color: green;
+    }
+    .expns span{
+        color: red;
+    }
+
 </style>
 <body>
 <header>
     <h1>Welcome, <span th:text="${username}">Username</span>!</h1>
-
     <form th:action="@{/logout}" th:method="post">
         <input class="classicalBttn" type="submit" value="Log Out">
     </form>
@@ -124,17 +131,18 @@
     </form>
 
     <form action="/budget/expenses" method="get">
-        <input id="expnsBttn" type="submit" value="Add Expenses" onclick="inputBack('expns')">
+        <input id="expnsBttn" type="submit" value="Add Expense" onclick="inputBack('expns')">
     </form>
 </nav>
 
 <main>
     <div id="incomes">
         <h2>Incomes</h2>
-        <div th:each="income : ${amount}">
+        <div th:each="income : ${amountG}">
             <div class="incm" th:if="${income.getAmount() > 0}" style="display: flex">
-                <a href="" th:text="${income.getCategory().getCategory_name()} + ', +'+ ${income.getAmount()}"></a>
-               <div class="inaexBttns" style="display: flex;">
+                <a href="" th:text="${income.getCategory().getCategory_name()}">Category Name</a>
+                <span th:text="${'+' + income.getAmount()}"></span>
+                <div class="inaexBttns" style="display: flex;">
                     <form th:action="@{/budget/{id}/editPage(id=${income.getId()})}" method="get">
                         <input class="classicalBttn" type="submit" value="EDIT">
                     </form>
@@ -147,9 +155,10 @@
     </div>
     <div id="expenses">
         <h2>Expenses</h2>
-        <div th:each="expense : ${amount}">
+        <div th:each="expense : ${amountL}">
             <div class="expns" th:if="${expense.getAmount() < 0}" style="display: flex">
-                <a href="" th:text="${expense.getCategory().getCategory_name()} + ', '+ ${expense.getAmount()}"></a>
+                <a href="" th:text="${expense.getCategory().getCategory_name()}">Category Name</a>
+                <span th:text="${expense.getAmount()}"></span>
                 <div class="inaexBttns" style="display: flex;">
                     <form th:action="@{/budget/{id}/editPage(id=${expense.getId()})}" method="get">
                         <input class="classicalBttn" type="submit" value="EDIT">
