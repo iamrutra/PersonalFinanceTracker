@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
     body {
         display: flex;
@@ -11,55 +12,113 @@
         background-color: #222;
         min-height: 100vh;
         margin: 0;
-        overflow: hidden; /* Prevent scrolling */
+        overflow: hidden;
     }
     .container {
-        color: white;
-        position: relative;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 50px;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-    }
-    .form {
-        position: relative;
+        font-family: "Radio Canada Big", sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        color: white;
+        width: 60%;
         background-color: rgba(45, 45, 45, 1);
         border-radius: 20px;
-        padding: 40px;
-        width: 400px;
-        height: 300px;
-        justify-content: center;
+        padding: 80px;
+        justify-content:space-evenly;
         align-items: center;
     }
+    .custom_input {
+	display: flex;
+	align-items: center;
+	position: relative;
+	max-width: 100%;
+    }
+    label{
+        width: 100%;
+    }
+    .input {
+        font-family: "Radio Canada Big", sans-serif;
+    	font-weight: 500;
+        font-size: 32px;
+    	padding: 4px 10px;
+    	width: 100%;
+    	outline: none;
+    	background: #FFFFFF;
+    	color: #FF0000;
+    	border: 2px solid #EB0000;
+    	border-radius: 12px;
+    	box-shadow: 1px 1px 0.5px 0px #E2E2E2;
+    	transition: .3s ease;
+    }
 
+    .input:focus {
+    	background: #F2F2F2;
+    	border: 2px solid #C70000;
+    	border-radius: 10px;
+    }
+
+    .input::placeholder {
+    	color: #DDDCD9;
+    }
+
+    input[type="submit"], .signup {
+        font-weight: 600;
+        display: inline-block;
+        background-color: #222;
+        color: white;
+        border: 2px solid white;
+        padding: 10px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 32px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover, .signup:hover {
+        background-color: #444;
+    }
+
+    .signup {
+        margin-left: 20px;
+    }
+    
+    .signup:visited {
+        color: white;
+    }
+    h1{
+        text-align: right;
+    }
     </style>
 </head>
 <body>
-<div class="highlight"></div>
 <div class="container">
     <div class="form">
         <form name="f" action="/process_login" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     
             <label for="username">Enter your username: </label>
-            <input type="text" name="username" id="username">
+            <div class="custom_input">
+                <input class="input" type="text" name="username" id="username">
+            </div>
             <br>
             <label for="password">Enter your password: </label>
-            <input type="password" name="password" id="password">
+            <div class="custom_input">
+                <input class="input" type="password" name="password" id="password">
+            </div>
             <br>
             <input type="submit" value="Login">
-            <a href="/auth/register">Sign up</a>
-            <div th:if="${param.error}" style="color: red">
+            <a class="signup" href="/auth/register">Sign up</a>
+            <div th:if="${param.error}" style="color: red; font-size: 20px;">
                 Bad username or password!
             </div>
         </form>
     </div>
+        <h1>Welcome <br> back!</h1>
 </div>
 <script>
-    const form = document.querySelector('.form');
+    const form = document.querySelector('.container');
 
     form.addEventListener('mousemove', () => {
       form.style.transition = 'border 0.3s';

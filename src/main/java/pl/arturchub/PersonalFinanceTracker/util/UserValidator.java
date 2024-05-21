@@ -28,29 +28,29 @@ public class UserValidator implements Validator {
         User user = (User) o;
 
         if (user.getUsername().isEmpty()) {
-            errors.rejectValue("username", "", "Username should not be empty");
+            errors.rejectValue("username", "", " * Username should not be empty");
         }
         if (user.getPassword().isEmpty()) {
-            errors.rejectValue("password", "", "Password should not be empty");
+            errors.rejectValue("password", "", " * Password should not be empty");
         }
         if (user.getEmail().isEmpty()) {
-            errors.rejectValue("email", "", "Email address should not be empty");
+            errors.rejectValue("email", "", " * Email address should not be empty");
         }
 
 
         if (user.getUsername().length() < 4 || user.getUsername().length() > 20) {
-            errors.rejectValue("username", "", "Username should be between 4 and 20 characters");
+            errors.rejectValue("username", "", " * Username should be between 4 and 20 characters");
         }
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "", "Password should be between 8 and 32 characters");
+            errors.rejectValue("password", "", " * Password should be between 8 and 32 characters");
         }
 
 
         if (userService.findByEmail(user.getEmail()).isPresent()) {
-            errors.rejectValue("email", "", "Email address already in use");
+            errors.rejectValue("email", "", " * Email address already in use");
         }
         if(userService.findByUsername(user.getUsername()).isPresent()) {
-            errors.rejectValue("username", "", "Username already in use");
+            errors.rejectValue("username", "", " * Username already in use");
         }
     }
 }

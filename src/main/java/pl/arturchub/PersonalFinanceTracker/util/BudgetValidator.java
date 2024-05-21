@@ -23,7 +23,7 @@ public class BudgetValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Budget budget = (Budget) o;
         if (budget.getAmount() == 0) {
-            errors.rejectValue("amount", "", "Amount should not be zero");
+            errors.rejectValue("amount", "", " * Amount should not be zero");
         }
     }
 }

@@ -3,53 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <title>Your budget</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/budgetCSS.css">
+    <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        background-color: #222;
+        color: white;
+    }
+    header{
+        display: flex;
+        justify-content: space-between;
+        /* justify-content: center; */
+        font-family: "Radio Canada Big", sans-serif;
+        font-size: 25px;
+        padding: 40px;
+    }
+    .classicalBttn {
+        background: none;
+        border: none;
+        color: white;
+        font-family: "Radio Canada Big", sans-serif;
+        font-size: 25px;
+        padding: 5px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 22px;
+        cursor: pointer;
+        border: 2px solid white;
+        transition: background-color 0.3s;
+    }
+    .classicalBttn:hover{
+        background-color: #444;
+    }
+
+    nav{
+        display: flex;
+        justify-content: center;
+    }
+    nav input {
+        margin: 10px;
+        font-weight: 500;
+        background-color: #222;
+        color: white;
+        border: 2px solid white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 22px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .classicalBttn:hover{
+        cursor: pointer;
+    }
+    nav #incmBttn:hover{
+        background: rgba(81, 255, 0, 0.5);
+    }
+    nav #expnsBttn:hover{
+        background: rgba(255, 0, 0, 0.5);
+    }
+    main{
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+    }
+    #incomes h2, #expenses h2{
+        text-align: center;
+        font-family: "Radio Canada Big", sans-serif;
+        font-weight: 500;
+        font-size: 35px;
+    }
+    #incomes, #expenses{
+        width: 30%;
+    }
+    .incm, .expns{
+        justify-content: space-between;
+        padding: 20px;
+        text-align: center;
+    }
+    .incm a, .expns a{
+        font-size: 22px;
+        font-family: "Radio Canada Big", sans-serif;
+        text-decoration: none;
+        text-align: center;
+    }
+    .incm a:visited, .expns a:visited{
+        color: white;
+    }
+    .incm:hover, .expns:hover{
+        background-color: #444;
+    }
+    .incm input, .expns input{
+        font-size: 16px;
+        margin: 3px;
+        transition: font-size 0.3s;
+    }
+    .incm input:hover, .expns input:hover{
+        font-size: 18px;
+        transition: font-size 0.3s;
+    }
+</style>
 <body>
-<h1>Welcome, <span th:text="${username}">Username</span>!</h1>
+<header>
+    <h1>Welcome, <span th:text="${username}">Username</span>!</h1>
 
-<form th:action="@{/logout}" th:method="post">
-    <input type="submit" value="Log Out!">
-</form>
+    <form th:action="@{/logout}" th:method="post">
+        <input class="classicalBttn" type="submit" value="Log Out">
+    </form>
+</header>
 
-<div class="inputs">
+<nav>
     <form action="/budget/income" method="get">
-        <input type="submit" value="Add Income">
+        <input id="incmBttn" type="submit" value="Add Income" onclick="inputBack('incm')">
     </form>
 
     <form action="/budget/expenses" method="get">
-        <input type="submit" value="Add Expenses">
+        <input id="expnsBttn" type="submit" value="Add Expenses" onclick="inputBack('expns')">
     </form>
-</div>
+</nav>
 
-<div id="incomes">
-    <h3>Incomes</h3>
-    <div th:each="income : ${amount}">
-        <div th:if="${income.getAmount() > 0}" style="display: flex">
-            <p th:text="${income.getCategory().getCategory_name()} + ', +'+ ${income.getAmount()}"></p>
-            <form th:action="@{/budget/{id}/editPage(id=${income.getId()})}" method="get">
-                <input type="submit" value="EDIT">
-            </form>
-            <form th:action="@{/budget/{id}/delete(id=${income.getId()})}" method="post">
-                <input type="submit" value="DELETE">
-            </form>
+<main>
+    <div id="incomes">
+        <h2>Incomes</h2>
+        <div th:each="income : ${amount}">
+            <div class="incm" th:if="${income.getAmount() > 0}" style="display: flex">
+                <a href="" th:text="${income.getCategory().getCategory_name()} + ', +'+ ${income.getAmount()}"></a>
+               <div class="inaexBttns" style="display: flex;">
+                    <form th:action="@{/budget/{id}/editPage(id=${income.getId()})}" method="get">
+                        <input class="classicalBttn" type="submit" value="EDIT">
+                    </form>
+                    <form th:action="@{/budget/{id}/delete(id=${income.getId()})}" method="post">
+                        <input class="classicalBttn" type="submit" value="DELETE">
+                    </form>
+               </div>
+            </div>
         </div>
     </div>
-</div>
-<div id="expenses">
-    <h3>Expenses</h3>
-    <div th:each="expense : ${amount}">
-        <div th:if="${expense.getAmount() < 0}" style="display: flex">
-            <p th:text="${expense.getCategory().getCategory_name()} + ', '+ ${expense.getAmount()}"></p>
-            <form th:action="@{/budget/{id}/editPage(id=${expense.getId()})}" method="get">
-                <input type="submit" value="EDIT">
-            </form>
-            <form th:action="@{/budget/{id}/delete(id=${expense.getId()})}" method="post">
-                <input type="submit" value="DELETE">
-            </form>
+    <div id="expenses">
+        <h2>Expenses</h2>
+        <div th:each="expense : ${amount}">
+            <div class="expns" th:if="${expense.getAmount() < 0}" style="display: flex">
+                <a href="" th:text="${expense.getCategory().getCategory_name()} + ', '+ ${expense.getAmount()}"></a>
+                <div class="inaexBttns" style="display: flex;">
+                    <form th:action="@{/budget/{id}/editPage(id=${expense.getId()})}" method="get">
+                        <input class="classicalBttn" type="submit" value="EDIT">
+                    </form>
+                    <form th:action="@{/budget/{id}/delete(id=${expense.getId()})}" method="post">
+                        <input class="classicalBttn" type="submit" value="DELETE">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
+</main>
 </body>
 </html>
