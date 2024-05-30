@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: iamrutra/personal-finance-tracker-db-categories
+    ports:
+      - 5432:5432
+    container_name: postgresql_container
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_DB: personal_finance_tracker
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    restart: always
+
+  app:
+    image: iamrutra/personal-finance-tracker
+    container_name: testapp_container
+    ports:
+      - 8089:8089
+    environment:
+      db-url: jdbc:postgresql://db:5432/personal_finance_tracker
+      db-username: postgres
+      db-password: admin
+    depends_on:
+      - db
+    restart: always
