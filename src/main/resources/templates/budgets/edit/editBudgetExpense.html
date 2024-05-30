@@ -3,19 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Expense</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #222;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            font-family: "Radio Canada Big", sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            color: white;
+            width: 60%;
+            background-color: rgba(45, 45, 45, 1);
+            border-radius: 20px;
+            padding: 80px;
+            justify-content:space-evenly;
+            align-items: center;
+        }
+        .custom_input {
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            position: relative;
+            max-width: 100%;
+        }
+        label{
+            padding-right: 10px;
+        }
+        .input {
+            font-family: "Radio Canada Big", sans-serif;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 32px;
+            padding: 4px 10px;
+            width: 40%;
+            outline: none;
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 2px solid #EB0000;
+            border-radius: 12px;
+            box-shadow: 1px 1px 0.5px 0px #E2E2E2;
+            transition: .3s ease;
+        }
+        .input:focus {
+            background: #F2F2F2;
+            border: 2px solid #C70000;
+            border-radius: 10px;
+        }
+        .input::placeholder {
+            color: #DDDCD9;
+        }
+        .container form input[type="submit"], .container form a {
+            margin-top: 30px;
+            font-weight: 600;
+            display: inline-block;
+            background-color: #222;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 32px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .container form input[type="submit"]:hover, .container form a:hover {
+            background-color: #444;
+        }
+        .container form a {
+            margin-left: 20px;
+        }
+        .container form a:visited {
+            color: white;
+        }
+        h1{
+            text-align: center;
+        }
+        form{
+            justify-content:center;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>Edit Expense</h1>
-<form th:action="@{/budget/{id}/edit(id=${budget.getId()})}" th:method="post" th:object="${budget}">
-    <label for="amount">Amount: </label>
-    <input type="number" th:field="*{amount}" min="0.01" step="0.01" id="amount">
-    <label for="category">Category: </label>
-    <select th:field="*{category}" id="category">
-        <option value="" disabled selected>Select a category</option>
-        <option th:each="category : ${categories}" th:value="${category.getCategory_id()}" th:text="${category.getCategory_name()}"></option>
-    </select>
-    <input type="hidden" name="type" value="expense">
-    <input type="submit" value="Edit Expense">
-</form>
+    
+<div class="container">
+    <h1>Edit Expense</h1>
+    <form th:action="@{/budget/{id}/edit(id=${budget.getId()})}" th:method="post" th:object="${budget}">
+        <div class="custom_input">
+            <label for="amount">Amount: </label>
+            <input class="input" type="number" th:field="*{amount}" min="0.01" step="0.01" id="amount">
+        </div>
+        
+        <div class="custom_input">
+            <label for="category">Category: </label>
+            <select class="input" th:field="*{category}" id="category">
+                <option value="" disabled selected>Select a category</option>
+                <option th:each="category : ${categories}" th:value="${category.getCategory_id()}" th:text="${category.getCategory_name()}"></option>
+            </select>
+        </div>
+        
+        <input type="hidden" name="type" value="expense">
+        <input type="submit" value="Edit Expense">
+        <a th:href="@{/budget}">Back to menu</a>
+    </form>
+</div>
 </body>
 </html>

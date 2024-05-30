@@ -3,29 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Page</title>
+    <style>
+        body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #222;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+    .container {
+        font-family: "Radio Canada Big", sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        color: white;
+        width: 60%;
+        background-color: rgba(45, 45, 45, 1);
+        border-radius: 20px;
+        padding: 80px;
+        justify-content:space-evenly;
+        align-items: center;
+    }
+        label{
+            padding-right: 10px;
+        }
+        .container form input[type="submit"]{
+            margin-top: 30px;
+            font-weight: 600;
+            display: inline-block;
+            background-color: #222;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 32px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .container form input[type="submit"]:hover{
+            background-color: #444;
+        }
+
+        h1{
+            text-align: center;
+        }
+        form{
+            justify-content:center;
+            text-align: center;
+        }
+        .container div .flex{
+            justify-content: center;
+            display: flex;
+        }
+        .container div .flex input[type="submit"]{
+            margin: 0 10px;
+        }
+        #incmBttn:hover{
+        background: rgba(81, 255, 0, 0.5);
+        }
+        #expnsBttn:hover{
+        background: rgba(255, 0, 0, 0.5);
+    }
+    </style>
 </head>
 <body>
-<div th:if="${budget.getAmount() > 0}">
-    <h1>Is it still income?</h1>
-    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
-        <input type="hidden" name="type" value="income">
-        <input type="submit" value="YES">
-    </form>
-    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
-        <input type="hidden" name="type" value="expense">
-        <input type="submit" value="NO">
-    </form>
-</div>
-<div th:unless="${budget.getAmount() > 0}">
-    <h1>Is it still expense?</h1>
-    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
-        <input type="hidden" name="type" value="expense">
-        <input type="submit" value="YES">
-    </form>
-    <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
-        <input type="hidden" name="type" value="income">
-        <input type="submit" value="NO">
-    </form>
+<div class="container">
+    <div th:if="${budget.getAmount() > 0}">
+        <h1>Is it still income?</h1>
+        <div class="flex">
+            <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
+                <input type="hidden" name="type" value="income">
+                <input id="incmBttn" type="submit" value="YES">
+            </form>
+            <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
+                <input type="hidden" name="type" value="expense">
+                <input id="expnsBttn" type="submit" value="NO">
+            </form>
+        </div>
+    </div>
+    <div th:unless="${budget.getAmount() > 0}">
+        <h1>Is it still expense?</h1>
+        <div class="flex">
+            <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
+                <input type="hidden" name="type" value="expense">
+                <input id="incmBttn" type="submit" value="YES">
+            </form>
+            <form th:action="@{/budget/{id}/editBudgetType(id=${budget.getId()})}" th:method="post">
+                <input  type="hidden" name="type" value="income">
+                <input id="expnsBttn" type="submit" value="NO">
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>
